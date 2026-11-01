@@ -1,0 +1,14 @@
+#!/bin/sh
+# Locks the screen, then blanks the panel (dpms off) shortly after until unlocked.
+# Returns once locked so swayidle's before-sleep isn't held up.
+pgrep -x swaylock > /dev/null && exit 0
+swaylock -f
+(
+    swayidle -w \
+        timeout 15 'swaymsg "output * dpms off"' \
+        resume 'swaymsg "output * dpms on"' &
+    idle=$!
+    while pgrep -x swaylock > /dev/null; do sleep 1; done
+    kill "$idle"
+    swaymsg "output * dpms on" > /dev/null
+) > /dev/null 2>&1 &

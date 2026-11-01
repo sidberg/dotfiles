@@ -1,0 +1,212 @@
+/* Tokyo Night */
+@define-color bg #1a1b26;
+@define-color bg-highlight #292e42;
+@define-color border #414868;
+@define-color fg #c0caf5;
+@define-color comment #565f89;
+@define-color blue #7aa2f7;
+@define-color cyan #7dcfff;
+@define-color purple #bb9af7;
+@define-color red #f7768e;
+@define-color orange #ff9e64;
+@define-color yellow #e0af68;
+@define-color green #9ece6a;
+
+* {
+    font-family: "Inter", "JetBrainsMono Nerd Font Propo", "Font Awesome 7 Free", sans-serif;
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+/* The bar itself is invisible, so the modules float over the wallpaper as islands */
+window#waybar {
+    background: transparent;
+    color: @fg;
+}
+
+tooltip {
+    background-color: @bg;
+    border: 1px solid @border;
+    border-radius: 8px;
+}
+
+tooltip label {
+    color: @fg;
+}
+
+#workspaces,
+#mode,
+#scratchpad,
+#window,
+#clock,
+#custom-wallpaper,
+#custom-nightlight,
+#mpris,
+#pulseaudio,
+#network,
+#system,
+#battery,
+#tray {
+    background-color: alpha(@bg, 0.9);
+    border: 1px solid alpha(@border, 0.7);
+    border-radius: 10px;
+}
+
+window#waybar.empty #window {
+    background: transparent;
+    border-color: transparent;
+}
+
+#workspaces {
+    padding: 0 3px;
+}
+
+#workspaces button {
+    padding: 0 9px;
+    margin: 4px 1px;
+    color: @comment;
+    background: transparent;
+    border-radius: 7px;
+}
+
+#workspaces button:hover {
+    background: @bg-highlight;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+#workspaces button.visible {
+    color: @fg;
+    background: @bg-highlight;
+}
+
+#workspaces button.focused {
+    color: @bg;
+    background: @blue;
+}
+
+#workspaces button.urgent {
+    color: @bg;
+    background: @red;
+}
+
+#mode {
+    padding: 0 12px;
+    color: @bg;
+    background: @orange;
+    border-color: @orange;
+}
+
+#window {
+    padding: 0 12px;
+    color: @comment;
+}
+
+#clock {
+    padding: 0 16px;
+    color: @blue;
+    font-weight: 600;
+}
+
+#scratchpad,
+#custom-wallpaper,
+#custom-nightlight,
+#mpris,
+#pulseaudio,
+#network,
+#battery,
+#tray {
+    padding: 0 12px;
+}
+
+#custom-nightlight {
+    color: @yellow;
+}
+
+#system {
+    padding: 0 5px;
+}
+
+#load,
+#cpu,
+#temperature,
+#memory,
+#disk {
+    padding: 0 7px;
+}
+
+#custom-wallpaper {
+    color: @purple;
+}
+
+#mpris {
+    color: @green;
+}
+
+#mpris.paused {
+    color: @comment;
+}
+
+#pulseaudio {
+    color: @purple;
+}
+
+#network {
+    color: @cyan;
+}
+
+#load,
+#cpu {
+    color: @blue;
+}
+
+#temperature {
+    color: @orange;
+}
+
+#memory {
+    color: @yellow;
+}
+
+#memory.swap {
+    color: @comment;
+}
+
+#disk {
+    color: @green;
+}
+
+#battery {
+    color: @green;
+}
+
+#pulseaudio.muted,
+#network.disconnected {
+    color: @comment;
+}
+
+#cpu.warning,
+#memory.warning {
+    color: @yellow;
+}
+
+#cpu.critical,
+#memory.critical,
+#temperature.critical {
+    color: @red;
+}
+
+#battery.warning:not(.charging) {
+    color: @yellow;
+}
+
+#battery.critical:not(.charging) {
+    color: @red;
+}
+
+#tray > .needs-attention {
+    background: @red;
+    border-radius: 6px;
+}

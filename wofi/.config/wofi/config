@@ -1,0 +1,8 @@
+width=560
+height=400
+location=center
+prompt=Search
+matching=fuzzy
+insensitive=true
+hide_scroll=true
+image_size=26

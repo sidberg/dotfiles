@@ -1,0 +1,23 @@
+{
+    "logo": {
+        "type": "small",
+        "color": { "1": "#7aa2f7" },
+        "padding": { "right": 3 }
+    },
+    "display": {
+        "separator": "  ",
+        "color": { "keys": "#bb9af7", "title": "#7aa2f7" }
+    },
+    "modules": [
+        "title",
+        { "type": "os", "key": "os" },
+        { "type": "kernel", "key": "kernel" },
+        { "type": "wm", "key": "wm" },
+        { "type": "terminal", "key": "term" },
+        { "type": "theme", "key": "theme" },
+        { "type": "cpu", "key": "cpu" },
+        { "type": "memory", "key": "ram" },
+        { "type": "disk", "key": "disk", "folders": "/" },
+        "colors"
+    ]
+}

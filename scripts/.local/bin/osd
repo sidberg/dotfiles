@@ -1,0 +1,40 @@
+#!/bin/sh
+# Changes volume or brightness and shows the new level through mako.
+#   osd volume up|down|mute
+#   osd mic mute
+#   osd brightness up|down
+show() {
+    notify-send -a osd -t 1200 -h string:x-canonical-private-synchronous:osd -h "int:value:$2" "$1"
+}
+
+case "$1 $2" in
+    "volume up") pamixer -u -i 5 ;;
+    "volume down") pamixer -d 5 ;;
+    "volume mute") pamixer -t ;;
+    "mic mute") pamixer --default-source -t ;;
+    "brightness up") brightnessctl -q s +5% ;;
+    "brightness down") brightnessctl -q s 5%- ;;
+    *) exit 2 ;;
+esac
+
+case "$1" in
+    volume)
+        if [ "$(pamixer --get-mute)" = true ]; then
+            show "Volume muted" 0
+        else
+            level=$(pamixer --get-volume)
+            show "Volume $level%" "$level"
+        fi
+        ;;
+    mic)
+        if [ "$(pamixer --default-source --get-mute)" = true ]; then
+            show "Microphone muted" 0
+        else
+            show "Microphone on" "$(pamixer --default-source --get-volume)"
+        fi
+        ;;
+    brightness)
+        level=$(( $(brightnessctl g) * 100 / $(brightnessctl m) ))
+        show "Brightness $level%" "$level"
+        ;;
+esac

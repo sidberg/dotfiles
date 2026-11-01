@@ -1,0 +1,135 @@
+{
+    "position": "bottom",
+    "height": 34,
+    "margin-left": 8,
+    "margin-right": 8,
+    "margin-bottom": 6,
+    "spacing": 6,
+    "modules-left": ["sway/workspaces", "sway/mode", "sway/scratchpad", "sway/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["custom/wallpaper", "custom/nightlight", "mpris", "pulseaudio", "network", "group/system", "battery", "tray"],
+    "sway/workspaces": {
+        "disable-scroll": true
+    },
+    "sway/mode": {
+        "format": "{}"
+    },
+    "sway/scratchpad": {
+        "format": " {count}",
+        "show-empty": false,
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+    "sway/window": {
+        "max-length": 60
+    },
+    "custom/wallpaper": {
+        "exec": "cat ~/.local/state/wallpaper-rotate/collection",
+        "interval": "once",
+        "signal": 8,
+        "format": " {}",
+        "tooltip-format": "Click for the next collection, right-click for the next wallpaper",
+        "on-click": "~/.local/bin/wallpaper-rotate switch",
+        "on-click-right": "~/.local/bin/wallpaper-rotate"
+    },
+    "custom/nightlight": {
+        "format": "",
+        "tooltip-format": "Night light: warm from 20:00 to 07:00. Click to cycle auto, always day, always night",
+        "on-click": "pkill -USR1 -x wlsunset"
+    },
+    "mpris": {
+        "format": " {dynamic}",
+        "format-paused": " {dynamic}",
+        "dynamic-order": ["title", "artist"],
+        "dynamic-len": 40
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " muted",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "on-click": "pamixer -t",
+        "on-click-right": "pavucontrol"
+    },
+    "group/system": {
+        "orientation": "horizontal",
+        "modules": ["load", "cpu", "temperature", "memory", "memory#swap", "disk"]
+    },
+    "memory": {
+        "interval": 10,
+        "states": {
+            "warning": 80,
+            "critical": 92
+        },
+        "format": " {percentage}%",
+        "on-click": "swaymsg '[app_id=btop] focus' || alacritty --class btop -e btop",
+        "tooltip-format": "RAM {used:0.1f}/{total:0.1f} GiB"
+    },
+    "memory#swap": {
+        "interval": 10,
+        "format": " {swapPercentage}%",
+        "tooltip-format": "Swap {swapUsed:0.1f}/{swapTotal:0.1f} GiB"
+    },
+    "load": {
+        "interval": 5,
+        "format": " {load1} {load5} {load15}"
+    },
+    "disk": {
+        "interval": 30,
+        "path": "/home",
+        "format": " {free}",
+        "tooltip-format": "{used} of {total} used on {path}"
+    },
+    "network": {
+        "interval": 5,
+        "format-wifi": " {essid}   {bandwidthDownBytes}   {bandwidthUpBytes}",
+        "format-ethernet": " {bandwidthDownBytes}   {bandwidthUpBytes}",
+        "format-linked": " no IP",
+        "format-disconnected": " offline",
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr} via {gwaddr}",
+        "tooltip-format-wifi": "{ifname}: {ipaddr}/{cidr} via {gwaddr}\n{essid} ({signalStrength}%)"
+    },
+    "cpu": {
+        "interval": 5,
+        "states": {
+            "warning": 70,
+            "critical": 90
+        },
+        "format": " {usage}%",
+        "on-click": "swaymsg '[app_id=btop] focus' || alacritty --class btop -e btop"
+    },
+    "temperature": {
+        "interval": 5,
+        "hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
+        "input-filename": "temp1_input",
+        "critical-threshold": 90,
+        "format": " {temperatureC}°C"
+    },
+    "battery": {
+        "interval": 30,
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "clock": {
+        "interval": 5,
+        "format": "{:%a %b %d  %H:%M}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "format": {
+                "months": "<span color='#7aa2f7'><b>{}</b></span>",
+                "weekdays": "<span color='#565f89'>{}</span>",
+                "today": "<span color='#ff9e64'><b>{}</b></span>"
+            }
+        }
+    },
+    "tray": {
+        "spacing": 10
+    }
+}

@@ -1,0 +1,88 @@
+#!/bin/sh
+# Rotates the sway wallpaper through shuffled playlists, one per collection.
+# Each folder in $root is a collection, and only the selected one rotates.
+#   wallpaper-rotate         switch to the next wallpaper
+#   wallpaper-rotate switch  select the next collection and show a wallpaper from it
+#   wallpaper-rotate daemon  switch now, then every $WALLPAPER_INTERVAL seconds,
+#                            moving to the next collection when the date changes
+root="$HOME/.local/share/backgrounds/collections"
+state="${XDG_STATE_HOME:-$HOME/.local/state}/wallpaper-rotate"
+selected_file="$state/collection"
+selected_date_file="$state/collection-date"
+interval="${WALLPAPER_INTERVAL:-1800}"
+
+collections() {
+    find "$root" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+}
+
+selected() {
+    name=$(cat "$selected_file" 2>/dev/null)
+    if [ -n "$name" ] && [ -d "$root/$name" ]; then
+        echo "$name"
+    else
+        collections | head -n 1
+    fi
+}
+
+next() {
+    collection=$(selected)
+    dir="$root/$collection"
+    playlist="$state/$collection/playlist"
+    current="$state/$collection/current"
+    mkdir -p "$state/$collection"
+    # Skips entries whose file has been deleted since the shuffle
+    while :; do
+        if [ ! -s "$playlist" ]; then
+            # Reshuffle, keeping the current wallpaper last so it never repeats back to back
+            last=$(cat "$current" 2>/dev/null)
+            find "$dir" -maxdepth 1 -type f -name '*.jpg' | shuf | grep -vxF "$last" > "$playlist"
+            [ -f "$last" ] && echo "$last" >> "$playlist"
+            [ -s "$playlist" ] || return 1
+        fi
+        file=$(head -n 1 "$playlist")
+        sed -i 1d "$playlist"
+        [ -f "$file" ] && break
+    done
+    echo "$file" > "$current"
+    # swaylock's image, so the lock screen matches the desktop
+    ln -sfn "$file" "$state/lock-image"
+    # A step of 2 fades over about 2.4 seconds. awww's "fade" type stays under a second
+    awww img --resize crop --transition-type simple --transition-step 2 --transition-fps 60 "$file"
+}
+
+switch() {
+    from=$(selected)
+    to=$(collections | grep -A 1 -xF "$from" | sed -n 2p)
+    [ -n "$to" ] || to=$(collections | head -n 1)
+    mkdir -p "$state"
+    echo "$to" > "$selected_file"
+    date +%F > "$selected_date_file"
+    # Waybar's collection module refreshes on this signal
+    pkill -RTMIN+8 -x waybar
+    next && notify-send -a wallpaper-rotate -t 2000 "Wallpaper collection" "$to"
+}
+
+case "$1" in
+    daemon)
+        # sway starts awww-daemon at the same moment as this
+        tries=0
+        until awww query > /dev/null 2>&1 || [ "$tries" -ge 10 ]; do
+            sleep 1
+            tries=$((tries + 1))
+        done
+        while :; do
+            if [ "$(cat "$selected_date_file" 2>/dev/null)" = "$(date +%F)" ]; then
+                next
+            else
+                switch
+            fi
+            sleep "$interval"
+        done
+        ;;
+    switch)
+        switch
+        ;;
+    *)
+        next
+        ;;
+esac

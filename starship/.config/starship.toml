@@ -1,0 +1,38 @@
+palette = "tokyo_night"
+
+[palettes.tokyo_night]
+blue = "#7aa2f7"
+cyan = "#7dcfff"
+purple = "#bb9af7"
+green = "#9ece6a"
+yellow = "#e0af68"
+orange = "#ff9e64"
+red = "#f7768e"
+comment = "#565f89"
+
+[aws]
+disabled = true
+
+[character]
+success_symbol = "[❯](bold purple)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+
+[directory]
+style = "bold blue"
+truncation_length = 4
+
+[git_branch]
+style = "bold purple"
+
+[git_status]
+style = "yellow"
+
+[cmd_duration]
+style = "comment"
+
+[hostname]
+style = "bold cyan"
+
+[username]
+style_user = "bold cyan"
