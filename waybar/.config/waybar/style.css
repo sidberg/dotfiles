@@ -153,6 +153,17 @@ window#waybar.empty #window {
     color: @purple;
 }
 
+/* Monospace digits and spaces, so the padded values in the config never change the width */
+#network,
+#load,
+#cpu,
+#temperature,
+#memory,
+#disk {
+    font-family: "JetBrainsMono Nerd Font Propo", "Font Awesome 7 Free", monospace;
+    font-size: 12px;
+}
+
 #network {
     color: @cyan;
 }
