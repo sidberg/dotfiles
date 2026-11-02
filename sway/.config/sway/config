@@ -87,6 +87,8 @@ for_window [class="steam*"] inhibit_idle focus
 for_window [app_id="pavucontrol"] floating enable, move position center
 for_window [app_id="nwg-look"] floating enable, move position center
 for_window [app_id="btop"] floating enable, resize set 70 ppt 70 ppt, move position center
+# FreeCAD's file dialogs open at a cramped 635x425
+for_window [app_id="org.freecad.FreeCAD" title="^(Open|Import|Export|Save|Insert)"] resize set 60 ppt 70 ppt, move position center
 
     bindsym $mod+apostrophe exec grim -g "$(slurp -d)" - | wl-copy
 
