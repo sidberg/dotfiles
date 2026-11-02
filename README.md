@@ -8,6 +8,7 @@ Sway rice on Arch Linux, in Tokyo Night colours.
 sudo pacman -S --needed sway swayidle waybar mako wofi alacritty awww fish starship \
     grim slurp wl-clipboard libnotify brightnessctl pamixer pavucontrol playerctl \
     polkit-gnome wlsunset btop cava fastfetch nwg-look stow \
+    kvantum kvantum-qt5 qt5ct qt6ct \
     inter-font ttf-jetbrains-mono-nerd otf-font-awesome papirus-icon-theme
 yay -S --needed swaylock-effects-git bibata-cursor-theme-bin tokyonight-gtk-theme-git
 ```
@@ -19,10 +20,14 @@ Each top-level folder mirrors the home directory, so `stow` can link it into pla
 ```sh
 git clone git@github.com:sidberg/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-stow alacritty btop cava fastfetch fish gtk mako scripts starship sway swaylock waybar wofi
+stow alacritty btop cava fastfetch fish gtk mako qt scripts starship sway swaylock waybar wofi
 ```
 
 `sway/.config/sway/config` and `swaylock/.config/swaylock/config` contain `/home/sidney` paths, so change those for a different username.
+
+## Qt theme
+
+Qt apps use the Kvantum theme in `qt/.config/Kvantum/Kvantum-Tokyo-Night`. It comes from [0xsch1zo/Kvantum-Tokyo-Night](https://github.com/0xsch1zo/Kvantum-Tokyo-Night) at commit `b1e6b09` (GPL-3.0), with the disabled text and neutral grey palette colours changed.
 
 ## Wallpapers
 
