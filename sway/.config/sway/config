@@ -77,11 +77,12 @@ output DP-1 position 0,0 scale 1.5 subpixel rgb
 # This will lock your screen and turn off your displays after 600 seconds of
 # inactivity, and turn your screens back on when resumed. It will also lock
 # your screen before your computer goes to sleep.
-exec swayidle -w \
+exec swayidle -d -w \
          timeout 600 'swaylock -f' \
          timeout 600 'swaymsg "output * dpms off"' \
             resume 'swaymsg "output * dpms on"' \
-         before-sleep '/home/sidney/.local/bin/lock-screen'
+         before-sleep '/home/sidney/.local/bin/lock-screen' \
+         2>> /home/sidney/.local/state/swayidle.log
 
 for_window [class="steam*"] inhibit_idle focus
 for_window [app_id="pavucontrol"] floating enable, move position center
