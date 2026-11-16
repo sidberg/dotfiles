@@ -1,0 +1,14 @@
+#!/bin/sh
+# App/command launcher on fuzzel. Pressing the bind again closes an open menu.
+#   launcher run   - any executable on $PATH (incl. ~/.local/bin), launched via sway
+#   launcher drun  - desktop applications (fuzzel's own mode)
+pkill -x fuzzel && exit 0
+export PATH="$HOME/.local/bin:$PATH"
+case "${1:-run}" in
+drun)
+    exec fuzzel ;;
+*)
+    cmd=$(IFS=:; for d in $PATH; do [ -d "$d" ] && find -L "$d" -maxdepth 1 -type f -perm -u+x -printf '%f\n' 2>/dev/null; done \
+        | sort -u | fuzzel --dmenu --prompt="Run ") || exit 0
+    [ -n "$cmd" ] && exec swaymsg exec -- "PATH=$PATH $cmd" ;;
+esac

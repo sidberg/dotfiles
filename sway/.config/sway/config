@@ -78,7 +78,7 @@ output DP-1 position 0,0 scale 1.5 subpixel rgb
 # inactivity, and turn your screens back on when resumed. It will also lock
 # your screen before your computer goes to sleep.
 exec swayidle -d -w \
-         timeout 600 'swaylock -f' \
+         timeout 600 '/home/sidney/.local/bin/lock-screen' \
          timeout 600 'swaymsg "output * dpms off"' \
             resume 'swaymsg "output * dpms on"' \
          before-sleep '/home/sidney/.local/bin/lock-screen' \
@@ -111,8 +111,8 @@ for_window [app_id="org.freecad.FreeCAD" title="^(Open|Import|Export|Save|Insert
     bindsym $mod+Escape exec /home/sidney/.local/bin/lock-screen
 
     # Start your launcher
-    bindsym $mod+d exec env PATH=$HOME/.local/bin:$PATH wofi --show run --allow-images -G
-    bindsym $mod+Shift+d exec wofi --show drun --allow-images -G
+    bindsym $mod+d exec $HOME/.local/bin/launcher run
+    bindsym $mod+Shift+d exec $HOME/.local/bin/launcher drun
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.

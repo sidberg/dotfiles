@@ -1,8 +1,15 @@
 #!/bin/sh
 # Locks the screen, then blanks the panel (dpms off) shortly after until unlocked.
+# Pointer devices are disabled while locked so only the keyboard can wake it.
 # Returns once locked so swayidle's before-sleep isn't held up.
 pgrep -x swaylock > /dev/null && exit 0
-swaylock -f
+pointers() {
+    for t in pointer touchpad touch; do
+        swaymsg input "type:$t" events "$1" > /dev/null
+    done
+}
+pointers disabled
+swaylock -f || { pointers enabled; exit 1; }
 (
     swayidle -w \
         timeout 15 'swaymsg "output * dpms off"' \
@@ -10,5 +17,6 @@ swaylock -f
     idle=$!
     while pgrep -x swaylock > /dev/null; do sleep 1; done
     kill "$idle"
+    pointers enabled
     swaymsg "output * dpms on" > /dev/null
 ) > /dev/null 2>&1 &
